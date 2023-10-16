@@ -59,8 +59,8 @@
 			children = (
 				CD3575EA2AD6C0110026DDB4 /* CupcakeCornerApp.swift */,
 				CD3575EC2AD6C0110026DDB4 /* ContentView.swift */,
-				CD1FB9802ADBB16700321B37 /* CheckoutView.swift */,
 				CD1FB97E2ADB993100321B37 /* AddressView.swift */,
+				CD1FB9802ADBB16700321B37 /* CheckoutView.swift */,
 				CD1FB97C2ADB88F500321B37 /* Order.swift */,
 				CD3575EE2AD6C0120026DDB4 /* Assets.xcassets */,
 				CD3575F02AD6C0120026DDB4 /* Preview Content */,

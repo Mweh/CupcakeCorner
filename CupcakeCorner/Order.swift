@@ -7,7 +7,12 @@
 
 import SwiftUI
 
-class Order: ObservableObject{
+class Order: ObservableObject, Codable{
+    
+    enum Codingkeys: CodingKey {
+        case flavor, amount, extraSprinkle, extraFrosted, addressName, addressStreet, addressCity, addressZip
+    }
+    
     static let flavors = ["Chocolate", "Vanilla", "Strawberry", "Banana"]
     
     @Published var flavor = 0
@@ -27,7 +32,7 @@ class Order: ObservableObject{
     @Published var addressStreet = ""
     @Published var addressCity = ""
     @Published var addressZip = ""
-
+    
     var hasValidAddress: Bool{
         if addressName.isEmpty || addressStreet.isEmpty || addressCity.isEmpty || addressZip.isEmpty{
             return false
@@ -54,4 +59,38 @@ class Order: ObservableObject{
         
         return cost
     }
+    
+    init() { }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: Codingkeys.self)
+        
+        try container.encode(flavor, forKey: .flavor)
+        try container.encode(amount, forKey: .amount)
+        
+        try container.encode(extraSprinkle, forKey: .extraSprinkle)
+        try container.encode(extraFrosted, forKey: .extraFrosted)
+        
+        try container.encode(addressName, forKey: .addressName)
+        try container.encode(addressStreet, forKey: .addressCity)
+        try container.encode(addressCity, forKey: .addressCity)
+        try container.encode(addressZip, forKey: .addressZip)
+    }
+    
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: Codingkeys.self)
+        
+        flavor = try container.decode(Int.self, forKey: .flavor)
+        amount = try container.decode(Int.self, forKey: .amount)
+        
+        extraSprinkle = try container.decode(Bool.self, forKey: .extraSprinkle)
+        extraFrosted = try container.decode(Bool.self, forKey: .extraFrosted)
+        
+        addressName = try container.decode(String.self, forKey: .addressName)
+        addressStreet = try container.decode(String.self, forKey: .addressCity)
+        addressCity = try container.decode(String.self, forKey: .addressCity)
+        addressZip = try container.decode(String.self, forKey: .addressZip)
+
+    }
+    
 }
