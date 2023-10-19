@@ -8,18 +8,18 @@
 import SwiftUI
 
 struct AddressView: View {
-    @ObservedObject var order: Order
+    @ObservedObject var sharedOrder: SharedOrder
     
     var body: some View {
         Form{
             Section{
-                TextField("Full name", text: $order.addressName)
-                TextField("Street address", text: $order.addressStreet)
-                TextField("City", text: $order.addressCity)
-                TextField("Zip code", text: $order.addressZip)
+                TextField("Full name", text: $sharedOrder.order.addressName)
+                TextField("Street address", text: $sharedOrder.order.addressStreet)
+                TextField("City", text: $sharedOrder.order.addressCity)
+                TextField("Zip code", text: $sharedOrder.order.addressZip)
             }
             Section{
-                if order.hasNoSpacedAddress == false {
+                if sharedOrder.order.hasNoSpacedAddress == false {
                     Text("* Please remove unnecessary white space")
                         .font(.caption)
                         .foregroundStyle(.red)
@@ -27,7 +27,7 @@ struct AddressView: View {
             }
             Section{
                 NavigationLink{
-                    CheckoutView(order: order)
+                    CheckoutView(sharedOrder: sharedOrder)
                 } label: {
                     Text("Checkout")
                 }
@@ -42,14 +42,14 @@ struct AddressView: View {
     }
     
     func hasValidAddress() -> Bool{
-        order.hasValidAddress == false || order.hasNoSpacedAddress == false
+        sharedOrder.order.hasValidAddress == false || sharedOrder.order.hasNoSpacedAddress == false
     }
 }
 
 struct AdressView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView{
-            AddressView(order: Order())
+            AddressView(sharedOrder: SharedOrder())
         }
     }
 }

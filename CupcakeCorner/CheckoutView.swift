@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct CheckoutView: View {
-    @ObservedObject var order: Order
+    @ObservedObject var sharedOrder: SharedOrder
     
     @State private var showingAlert = false
     @State private var messageAlert = ""
@@ -28,7 +28,7 @@ struct CheckoutView: View {
                 }
                 .frame(height: 400)
                 
-                Text("Your total is \(order.cost, format: .currency(code: "IDR"))")
+                Text("Your total is \(sharedOrder.order.cost, format: .currency(code: "IDR"))")
                     .font(.title)
                 Button("Place order", action: {
                     test()
@@ -55,7 +55,7 @@ struct CheckoutView: View {
     
     func placeOrder() async {
         // Convert our current order object into some JSON data that can be sent.
-        guard let encoded = try? JSONEncoder().encode(order) else {
+        guard let encoded = try? JSONEncoder().encode(sharedOrder.order) else {
             print("Failed to encoded the order")
             return
         }
@@ -83,16 +83,16 @@ struct CheckoutView: View {
     }
     
     func test(){
-        print("flavor: \(order.flavor)")
-        print("amount: \(order.amount)")
-        print("extraSprinkle: \(order.extraSprinkle)")
-        print("extraFrosted: \(order.extraFrosted)")
-        print("Total cost: \(order.cost)")
+        print("flavor: \(sharedOrder.order.flavor)")
+        print("amount: \(sharedOrder.order.amount)")
+        print("extraSprinkle: \(sharedOrder.order.extraSprinkle)")
+        print("extraFrosted: \(sharedOrder.order.extraFrosted)")
+        print("Total cost: \(sharedOrder.order.cost)")
     }
 }
 
 struct CheckoutView_Previews: PreviewProvider {
     static var previews: some View {
-        CheckoutView(order: Order())
+        CheckoutView(sharedOrder: SharedOrder())
     }
 }
