@@ -43,6 +43,10 @@ struct CheckoutView: View {
         } message: {
             Text(messageAlert)
         }
+        
+        // 2. Challenge
+//        If our call to placeOrder() fails – for example if there is no internet connection – show an informative alert for the user. To test this, try commenting out the request.httpMethod = "POST" line in your code, which should force the request to fail.
+
         .alert("Checkout failed", isPresented: $isFailedCheckout){
         } message: {
             Text(messageFailedCheckout)
@@ -61,7 +65,7 @@ struct CheckoutView: View {
         let url = URL(string: "https://reqres.in/api/cupcakecorner")!
         var request = URLRequest(url: url)
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-//        request.httpMethod = "POST"
+        request.httpMethod = "POST" // you can test the network by toggle commented this
         
         // Run that request and process the response.
         do {
