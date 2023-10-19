@@ -18,7 +18,7 @@ struct CheckoutView: View {
     var body: some View {
         ScrollView{
             VStack{
-                AsyncImage(url: URL(string: "https://img.kurio.network/F6I9fpIbiJl7nOd2MWK6t8ue4t4=/440x440/filters:quality(80)/https://kurio-img.kurioapps.com/20/10/02/938f6bba-c6d1-4cbb-84ab-ac8cf620cfaa.jpg"), scale: 3) { image in
+                AsyncImage(url: URL(string: sharedOrder.order.imageFlavor(imageFlavors: sharedOrder.order.flavor)), scale: 3) { image in
                     image
                         .resizable()
                         .scaledToFit()
@@ -45,8 +45,8 @@ struct CheckoutView: View {
         }
         
         // 2. Challenge
-//        If our call to placeOrder() fails – for example if there is no internet connection – show an informative alert for the user. To test this, try commenting out the request.httpMethod = "POST" line in your code, which should force the request to fail.
-
+        //        If our call to placeOrder() fails – for example if there is no internet connection – show an informative alert for the user. To test this, try commenting out the request.httpMethod = "POST" line in your code, which should force the request to fail.
+        
         .alert("Checkout failed", isPresented: $isFailedCheckout){
         } message: {
             Text(messageFailedCheckout)

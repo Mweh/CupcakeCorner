@@ -10,7 +10,7 @@ import SwiftUI
 class SharedOrder: ObservableObject{
     // 3. Challenge
     // For a more challenging task, see if you can convert our data model from a class to a struct, then create an ObservableObject class wrapper around it that gets passed around. This will result in your class having one @Published property, which is the data struct inside it, and should make supporting Codable on the struct much easier.
-
+    
     @Published var order: Order
     
     init() {
@@ -21,9 +21,9 @@ class SharedOrder: ObservableObject{
 struct Order: Codable{
     // structs have memberwise initializers by default while class need to do it manually
     
-    enum Codingkeys: CodingKey {
-        case flavor, amount, extraSprinkle, extraFrosted, addressName, addressStreet, addressCity, addressZip
-    }
+    //    enum Codingkeys: CodingKey {
+    //        case flavor, amount, extraSprinkle, extraFrosted, addressName, addressStreet, addressCity, addressZip
+    //    }
     
     static let flavors = ["Chocolate", "Vanilla", "Strawberry", "Banana"]
     
@@ -83,7 +83,29 @@ struct Order: Codable{
         return true
     }
     
-    // Below is the better version for validAddress bool
+    func imageFlavor(imageFlavors: Int) -> String {
+        let imageChoco = "https://img.kurio.network/F6I9fpIbiJl7nOd2MWK6t8ue4t4=/440x440/filters:quality(80)/https://kurio-img.kurioapps.com/20/10/02/938f6bba-c6d1-4cbb-84ab-ac8cf620cfaa.jpg"
+        let imageVanilla = "https://www.mybakingaddiction.com/wp-content/uploads/2011/07/unwrapped-vanilla-cupcake-hero.jpg"
+        let imageStrawberry = "https://preppykitchen.com/wp-content/uploads/2022/07/Strawberry-Cupcakes-Feature.jpg"
+        let imageBanana = "https://tornadoughalli.com/wp-content/uploads/2021/12/BANANA-CUPCAKES-4-1.jpg"
+        let imageError = "https://www.dictio.id/uploads/db3342/original/3X/c/4/c45165360f01a3ceb96f8e44a1aef3ee29f7d404.jpeg"
+        
+        switch imageFlavors {
+        case 0:
+            return imageChoco
+        case 1:
+            return imageVanilla
+        case 2:
+            return imageStrawberry
+        case 3:
+            return imageBanana
+        default:
+            return imageError
+        }
+    }
+}
+
+// Below is the better version for validAddress bool
 //    var hasValidAdddress : Bool {
 //        // day 52 - challenge 1
 //        if name.trimmingCharacters(in: .whitespaces).isEmpty ||
@@ -95,11 +117,11 @@ struct Order: Codable{
 //            return true
 //        }
 //    }
-    
-    
+
+
 //    This comment below is if it's only have one class conform to ObservableObject and Codable that required init
-    
-//    init() { }
+
+//        init() { }
 //
 //    func encode(to encoder: Encoder) throws {
 //        var container = encoder.container(keyedBy: Codingkeys.self)
@@ -130,5 +152,4 @@ struct Order: Codable{
 //        addressCity = try container.decode(String.self, forKey: .addressCity)
 //        addressZip = try container.decode(String.self, forKey: .addressZip)
 //    }
-    
-}
+
