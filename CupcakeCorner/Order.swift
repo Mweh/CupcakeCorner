@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Foundation
 
 class Order: ObservableObject, Codable{
     
@@ -34,7 +35,18 @@ class Order: ObservableObject, Codable{
     @Published var addressZip = ""
     
     var hasValidAddress: Bool{
-        if addressName.isEmpty || addressStreet.isEmpty || addressCity.isEmpty || addressZip.isEmpty{
+        let isAddressEmpty = addressName.isEmpty || addressStreet.isEmpty || addressCity.isEmpty || addressZip.isEmpty
+        
+        if isAddressEmpty {
+            return false
+        }
+        return true
+    }
+    
+    var hasNoSpacedAddress: Bool{
+        let isAddressWhiteSpaced = addressName.hasSuffix(" ") || addressStreet.hasSuffix(" ") || addressCity.hasSuffix(" ") || addressZip.hasSuffix(" ")
+        
+        if isAddressWhiteSpaced {
             return false
         }
         return true

@@ -12,6 +12,8 @@ struct CheckoutView: View {
     
     @State private var showingAlert = false
     @State private var messageAlert = ""
+    @State private var isFailedCheckout = false
+    @State private var messageFailedCheckout = ""
     
     var body: some View {
         ScrollView{
@@ -38,35 +40,40 @@ struct CheckoutView: View {
             }
         }
         .alert("Done!", isPresented: $showingAlert){
-            
         } message: {
             Text(messageAlert)
+        }
+        .alert("Checkout failed", isPresented: $isFailedCheckout){
+        } message: {
+            Text(messageFailedCheckout)
         }
     }
     
     func placeOrder() async {
-        //        Convert our current order object into some JSON data that can be sent.
+        // Convert our current order object into some JSON data that can be sent.
         guard let encoded = try? JSONEncoder().encode(order) else {
             print("Failed to encoded the order")
             return
         }
         
-        //        Tell Swift how to send that data over a network call.
+        // Tell Swift how to send that data over a network call.
         // GET = read/receive, POST = write/sent to the internet server
         let url = URL(string: "https://reqres.in/api/cupcakecorner")!
         var request = URLRequest(url: url)
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.httpMethod = "POST"
+//        request.httpMethod = "POST"
         
-        //        Run that request and process the response.
+        // Run that request and process the response.
         do {
             let (data, _) = try await URLSession.shared.upload(for: request, from: encoded)
             
             let decodedOrder = try JSONDecoder().decode(Order.self, from: data)
             
-            messageAlert = "Your \(order.amount)x \(Order.flavors[order.flavor].lowercased()) cupcake is on the way!"
+            messageAlert = "Your \(decodedOrder.amount)x \(Order.flavors[decodedOrder.flavor].lowercased()) cupcake is on the way!"
             showingAlert = true
         } catch {
+            isFailedCheckout = true
+            messageFailedCheckout = "Check your connection and try again"
             print("Checkout failed")
         }
     }
